@@ -153,4 +153,15 @@ class EventController extends Controller
             'position' => $peopleAhead + 1
         ]);
     }
+
+    public function purchase(Request $request, Event $event)
+    {
+        $user = $request->user();
+
+        EventQueue::where('user_id', $user->id)
+            ->where('event_id', $event->id)
+            ->delete();
+
+        return to_route('dashboard')->with('message', 'Acquisto completato con successo! Grazie.');
+    }
 }

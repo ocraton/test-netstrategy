@@ -3,7 +3,7 @@ import { onMounted, onUnmounted, ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
 import axios from 'axios';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 
 const props = defineProps({ event: Object });
 
@@ -92,13 +92,10 @@ onUnmounted(() => {
                     <h3 class="text-2xl font-bold mb-4">{{ event.title }}</h3>
                     <p class="text-gray-600 mb-8">Stai acquistando i biglietti. Inserisci i dati di pagamento...</p>
 
-                    <div class="space-y-4">
-                        <div class="h-10 bg-gray-100 rounded w-full"></div>
-                        <div class="h-10 bg-gray-100 rounded w-full"></div>
-                        <button class="bg-green-600 text-white px-6 py-3 rounded font-bold hover:bg-green-700">
-                            Paga e Concludi
-                        </button>
-                    </div>
+                    <Link :href="route('events.purchase', event.id)" method="post" as="button"
+                        class="w-full bg-green-600 text-white px-6 py-3 rounded font-bold hover:bg-green-700 flex justify-center items-center transition-colors">
+                        Paga e Concludi
+                    </Link>
 
                 </div>
             </div>

@@ -7,6 +7,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Middleware\EnsureEventTicketIsValid;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
@@ -27,7 +28,12 @@ Route::post('/events/{event}/join', [EventController::class, 'joinQueue'])->name
 
 Route::get('/events/{event}/waiting-room', [EventController::class, 'waitingRoom'])->name('events.waiting-room');
 
-Route::get('/events/{event}/checkout', [EventController::class, 'checkout'])->name('events.checkout');
+Route::middleware(EnsureEventTicketIsValid::class)->group(function () {
+
+    Route::get('/events/{event}/checkout', [EventController::class, 'checkout'])->name('events.checkout');
+
+    Route::post('/events/{event}/purchase', [EventController::class, 'purchase'])->name('events.purchase');
+});
 
 Route::get('/events/{event}/status', [EventController::class, 'checkQueueStatus'])->name('events.status');
 
