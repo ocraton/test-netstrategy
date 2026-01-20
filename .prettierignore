@@ -1,0 +1,3 @@
+*.vue
+resources/js/Pages/**/*.vue
+resources/js/Components/**/*.vue
