@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
-import { usePage } from '@inertiajs/vue3'
 
-const page = usePage()
 </script>
 
 <template>
@@ -19,9 +17,6 @@ const page = usePage()
         <div
             class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg dark:bg-gray-800"
         >
-            <div v-if="page.flash" class="toast">
-                {{ page.flash }}
-            </div>
             <slot />
         </div>
     </div>
