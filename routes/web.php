@@ -23,7 +23,12 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
-Route::post('/events/{event}/join', [EventController::class, 'joinQueue'])
-    ->name('events.join');
+Route::post('/events/{event}/join', [EventController::class, 'joinQueue'])->name('events.join');
+
+Route::get('/events/{event}/waiting-room', [EventController::class, 'waitingRoom'])->name('events.waiting-room');
+
+Route::get('/events/{event}/checkout', [EventController::class, 'checkout'])->name('events.checkout');
+
+Route::get('/events/{event}/status', [EventController::class, 'checkQueueStatus'])->name('events.status');
 
 require __DIR__.'/auth.php';
