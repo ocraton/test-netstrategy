@@ -35,7 +35,7 @@ class EventController extends Controller
 
         // L'utente è scaduto? (Il problema delle 5 ore)
         // Se expires_at esiste ed è nel passato, resettiamo la sua posizione.
-        // In una logica severa lo cancelleremmo, qui lo rimettiamo in coda come "nuovo".
+        // lo rimettiamo in coda come "nuovo".
         if ($queueEntry->expires_at && $queueEntry->expires_at <= now()) {
             $queueEntry->update([
                 'allowed_at' => null,
