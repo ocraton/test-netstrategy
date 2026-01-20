@@ -82,13 +82,11 @@ class EventController extends Controller
 
     public function waitingRoom(Event $event)
     {
-        // Qui passeremo poi la posizione in coda
         return Inertia::render('Events/WaitingRoom', ['event' => $event]);
     }
 
     public function checkout(Event $event)
     {
-        // Qui poi faremo un middleware per impedire l'accesso diretto via URL
         return Inertia::render('Events/Checkout', ['event' => $event]);
     }
 
