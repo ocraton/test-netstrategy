@@ -32,7 +32,7 @@ class CleanExpiredQueues extends Command
         if ($deleted > 0) {
             $this->info("Pulizia completata. Rimossi {$deleted} utenti scaduti.");
         } else {
-            $this->info("Nessun utente scaduto trovato.");
+            $this->info('Nessun utente scaduto trovato.');
         }
     }
 }

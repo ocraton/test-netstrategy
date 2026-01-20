@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
 use App\Models\Event;
-use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -14,7 +13,7 @@ class DashboardController extends Controller
         $events = Event::orderBy('created_at', 'desc')->paginate(9);
 
         return Inertia::render('Dashboard', [
-            'events' => $events
+            'events' => $events,
         ]);
     }
 }

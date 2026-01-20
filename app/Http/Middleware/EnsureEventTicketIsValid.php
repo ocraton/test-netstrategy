@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Models\EventQueue;
+use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +23,7 @@ class EnsureEventTicketIsValid
             ->where('event_id', $event->id)
             ->first();
 
-        if (!$ticket || !$ticket->allowed_at || $ticket->expires_at <= now()) {
+        if (! $ticket || ! $ticket->allowed_at || $ticket->expires_at <= now()) {
 
             return to_route('dashboard');
         }

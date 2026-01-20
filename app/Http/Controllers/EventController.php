@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
 use App\Models\Event;
 use App\Models\EventQueue;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class EventController extends Controller
 {
@@ -14,7 +14,7 @@ class EventController extends Controller
         $events = Event::orderBy('created_at', 'desc')->paginate(9);
 
         return Inertia::render('Events/Index', [
-            'events' => $events
+            'events' => $events,
         ]);
     }
 
@@ -25,7 +25,7 @@ class EventController extends Controller
         // Recupera o Crea il posto in fila
         $queueEntry = EventQueue::firstOrCreate([
             'user_id' => $user->id,
-            'event_id' => $event->id
+            'event_id' => $event->id,
         ]);
 
         // L'utente è già attivo e non è scaduto
@@ -45,11 +45,12 @@ class EventController extends Controller
         }
 
         // Controllo capienza (Se l'utente è ancora in waiting)
-        if (!$queueEntry->allowed_at) {
+        if (! $queueEntry->allowed_at) {
 
             // Se non c'è limite, entra subito
             if (is_null($event->max_concurrent_users)) {
                 $this->allowUser($queueEntry, $event);
+
                 return to_route('events.checkout', $event);
             }
 
@@ -62,6 +63,7 @@ class EventController extends Controller
             // se c'è spazio entra
             if ($activeUsers < $event->max_concurrent_users) {
                 $this->allowUser($queueEntry, $event);
+
                 return to_route('events.checkout', $event);
             }
         }
@@ -74,7 +76,7 @@ class EventController extends Controller
     {
         $entry->update([
             'allowed_at' => now(),
-            'expires_at' => now()->addSeconds($event->queue_timeout_seconds)
+            'expires_at' => now()->addSeconds($event->queue_timeout_seconds),
         ]);
     }
 
@@ -98,7 +100,7 @@ class EventController extends Controller
             ->where('event_id', $event->id)
             ->first();
 
-        if (!$queueEntry) { // se non c'è in coda lo caccio
+        if (! $queueEntry) { // se non c'è in coda lo caccio
             return response()->json(['status' => 'kicked', 'redirect' => route('events.join', $event)]);
         }
 
@@ -107,12 +109,13 @@ class EventController extends Controller
             // Controlla se è scaduto
             if ($queueEntry->expires_at <= now()) { // se è scaduto lo cancello
                 $queueEntry->delete();
+
                 return response()->json(['status' => 'expired', 'redirect' => route('dashboard')]);
             }
 
             return response()->json([
                 'status' => 'active',
-                'seconds_remaining' => now()->diffInSeconds($queueEntry->expires_at, false)
+                'seconds_remaining' => now()->diffInSeconds($queueEntry->expires_at, false),
             ]);
         }
 
@@ -137,7 +140,7 @@ class EventController extends Controller
 
                 return response()->json([
                     'status' => 'promoted',
-                    'redirect' => route('events.checkout', $event)
+                    'redirect' => route('events.checkout', $event),
                 ]);
             }
         }
@@ -150,7 +153,7 @@ class EventController extends Controller
 
         return response()->json([
             'status' => 'waiting',
-            'position' => $peopleAhead + 1
+            'position' => $peopleAhead + 1,
         ]);
     }
 
